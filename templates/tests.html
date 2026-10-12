@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Automated Test Suite - Secure Password Storage System{% endblock %}
+
+{% block content %}
+<div class="hero" style="padding-top: 10px; margin-bottom: 24px;">
+    <h1 class="hero-title" style="font-size: 2.2rem;">Automated System Test Suite</h1>
+    <p class="hero-subtitle">Real-time execution of Python unit and integration assertions validating cryptographic, authentication, and security requirements.</p>
+</div>
+
+<!-- Test Suite Summary Bar -->
+<div class="test-summary-bar">
+    <div class="test-summary-stats">
+        <div class="summary-stat-item">
+            <span class="summary-stat-label">Total Tests</span>
+            <span class="summary-stat-val" style="color: var(--text-primary);">{{ results.total }}</span>
+        </div>
+        <div class="summary-stat-item">
+            <span class="summary-stat-label">Passed</span>
+            <span class="summary-stat-val" style="color: var(--status-success);">{{ results.passed }}</span>
+        </div>
+        <div class="summary-stat-item">
+            <span class="summary-stat-label">Failed</span>
+            <span class="summary-stat-val" style="color: {% if results.failed > 0 %}var(--status-danger){% else %}var(--text-muted){% endif %};">
+                {{ results.failed }}
+            </span>
+        </div>
+        <div class="summary-stat-item">
+            <span class="summary-stat-label">Execution Time</span>
+            <span class="summary-stat-val" style="color: var(--accent-cyan);">{{ results.total_time_ms }} ms</span>
+        </div>
+    </div>
+
+    <div>
+        <a href="{{ url_for('tests') }}" class="btn btn-primary btn-sm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+            </svg>
+            Re-run Test Suite
+        </a>
+    </div>
+</div>
+
+<!-- Detailed Tests Table -->
+<div style="overflow-x: auto;">
+    <table class="test-table">
+        <thead>
+            <tr>
+                <th style="width: 50px;">#</th>
+                <th style="width: 240px;">Test Case Name</th>
+                <th>Objective / Cryptographic Verification</th>
+                <th style="width: 120px;">Execution</th>
+                <th style="width: 110px;">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for test in results.tests %}
+                <tr>
+                    <td style="font-family: var(--font-mono); color: var(--text-muted);">{{ "%02d"|format(test.id) }}</td>
+                    <td>
+                        <strong style="color: var(--text-primary);">{{ test.name }}</strong>
+                    </td>
+                    <td>
+                        <div style="color: var(--text-secondary); margin-bottom: 4px;">{{ test.description }}</div>
+                        <div style="font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-muted);">
+                            &bull; {{ test.details }}
+                        </div>
+                    </td>
+                    <td style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-blue);">
+                        {{ test.duration_ms }} ms
+                    </td>
+                    <td>
+                        {% if test.status == 'PASS' %}
+                            <span class="stat-badge badge-success">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                PASS
+                            </span>
+                        {% else %}
+                            <span class="stat-badge badge-danger">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                FAIL
+                            </span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="note-box" style="margin-top: 32px;">
+    <div class="note-box-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 11 12 14 22 4"></polyline>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+        </svg>
+        Automated Verification Integrity
+    </div>
+    All 10 system tests are dynamically executed by real Python runtime assertions against <code>encryption.py</code>, <code>registration.py</code>, <code>authentication.py</code>, <code>storage.py</code>, and Flask session controllers. No results are mocked or hardcoded.
+</div>
+{% endblock %}

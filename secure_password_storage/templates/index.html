@@ -1,0 +1,260 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Secure Password Storage System{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        </svg>
+        Course Code: {{ course_code }} &bull; Alliance School of Advanced Computing
+    </div>
+
+    <h1 class="hero-title">{{ project_title }}</h1>
+    <p class="hero-subtitle">Learn how hashing and salting protect user credentials.</p>
+
+    <div class="hero-cta">
+        {% if current_user %}
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
+            <a href="{{ url_for('shopping_demo') }}" class="btn btn-secondary" style="border-color: #2874f0; color: #38bdf8;">
+                Launch ShopKart E-Commerce Store &rarr;
+            </a>
+        {% else %}
+            <a href="{{ url_for('register') }}" class="btn btn-primary">Create Account</a>
+            <a href="{{ url_for('login') }}" class="btn btn-secondary">Login</a>
+            <a href="{{ url_for('shopping_demo') }}" class="btn btn-secondary" style="border-color: #2874f0; color: #38bdf8;">
+                Launch ShopKart E-Commerce Store &rarr;
+            </a>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Visual Workflow: Cryptographic Pipeline -->
+<div class="workflow-box">
+    <div class="workflow-header">
+        <h3>Cryptographic Architecture Pipeline</h3>
+        <p>Mathematical transformation of credentials prior to persistent storage</p>
+    </div>
+
+    <div class="flow-steps">
+        <div class="flow-step">
+            <div class="flow-step-label">Input</div>
+            <div class="flow-step-val">PASSWORD</div>
+        </div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-step">
+            <div class="flow-step-label">Entropy (16-Byte)</div>
+            <div class="flow-step-val">RANDOM SALT</div>
+        </div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-step">
+            <div class="flow-step-label">One-Way Algorithm</div>
+            <div class="flow-step-val">SHA-256</div>
+        </div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-step">
+            <div class="flow-step-label">Digest Output</div>
+            <div class="flow-step-val">HASH</div>
+        </div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-step">
+            <div class="flow-step-label">Persistent Layer</div>
+            <div class="flow-step-val">STORAGE</div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- LIVE STORED SALT & HASH INSPECTOR (REGISTERED DEMO USERS)    -->
+<!-- ============================================================ -->
+<div class="card" style="border: 2px solid var(--accent-primary); box-shadow: 0 8px 30px rgba(2, 132, 199, 0.2); margin-bottom: 40px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+        <div class="card-title" style="margin-bottom: 0;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            Live Stored Salt & Hash Inspector (Proof from users.json)
+        </div>
+        <span class="stat-badge badge-success">
+            Plaintext Passwords NEVER Stored
+        </span>
+    </div>
+
+    <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 20px; line-height: 1.6;">
+        Below are the live cryptographic records saved on disk in <code>users.json</code>. Each user account stores a cryptographically generated 16-byte random salt and 64-hexadecimal SHA-256 hash. <strong>Plaintext passwords are NEVER stored.</strong>
+    </p>
+
+    {% if latest_username and latest_creds %}
+    <!-- Primary Showcase for Most Recently Registered User -->
+    <div style="background: rgba(17, 24, 39, 0.85); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: var(--radius-md); padding: 20px; margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+            <div>
+                <span style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 0.5px;">Most Recently Registered User</span>
+                <div style="font-size: 1.15rem; font-weight: 800; color: #ffffff; font-family: var(--font-mono);">
+                    {{ latest_username }}
+                </div>
+            </div>
+            <span class="stat-badge badge-cyan" style="font-size: 0.75rem;">Newest Account &bull; Top of Database</span>
+        </div>
+
+        <div class="grid-2" style="gap: 16px; margin-bottom: 12px;">
+            <!-- Salt Box -->
+            <div>
+                <div class="code-box-header">
+                    <span style="color: #38bdf8;">Stored 16-Byte Cryptographic Salt</span>
+                    <span class="stat-badge badge-cyan" style="font-size: 0.72rem;">32 Hex Characters (128 Bits)</span>
+                </div>
+                <div class="code-box" style="color: #38bdf8; font-size: 0.95rem; padding: 12px;">
+                    {{ latest_creds.salt }}
+                </div>
+            </div>
+
+            <!-- Hash Box -->
+            <div>
+                <div class="code-box-header">
+                    <span style="color: #a5b4fc;">Stored SHA-256 One-Way Hash</span>
+                    <span class="stat-badge badge-cyan" style="font-size: 0.72rem;">64 Hex Characters (256 Bits)</span>
+                </div>
+                <div class="code-box" style="color: #a5b4fc; font-size: 0.88rem; padding: 12px; word-break: break-all;">
+                    {{ latest_creds.hash }}
+                </div>
+            </div>
+        </div>
+
+        <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: var(--radius-sm); padding: 10px 14px; font-size: 0.85rem; color: #34d399; display: flex; align-items: center; gap: 8px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <strong>Storage Security Verification:</strong> The database stores only the random salt and SHA-256 hash. Plaintext password is never saved in users.json.
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Table of all registered users in users.json -->
+    {% if all_users %}
+        <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+                <div style="font-size: 0.9rem; font-weight: 700; color: #cbd5e1;">
+                    Complete Active Database (All Registered Users in users.json &bull; Top to Bottom Order):
+                </div>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">{{ all_users|length }} Real Accounts</span>
+            </div>
+            <div style="overflow-x: auto;">
+                <table class="test-table" style="font-size: 0.85rem;">
+                    <thead>
+                        <tr>
+                            <th style="width: 70px;">Order</th>
+                            <th style="width: 220px;">Username / ID</th>
+                            <th style="width: 280px;">16-Byte Random Salt (Hex)</th>
+                            <th>Stored SHA-256 Hash</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for u, record in all_users.items() %}
+                            <tr>
+                                <td style="color: var(--text-muted); font-size: 0.8rem;">#{{ loop.index }}</td>
+                                <td>
+                                    <strong style="color: #ffffff;">{{ u }}</strong>
+                                    {% if loop.first %}
+                                        <span style="background: #0284c7; color: #fff; font-size: 0.65rem; padding: 1px 6px; border-radius: 3px; margin-left: 6px;">Newest</span>
+                                    {% endif %}
+                                </td>
+                                <td style="font-family: var(--font-mono); color: #38bdf8;">{{ record.salt }}</td>
+                                <td style="font-family: var(--font-mono); color: #a5b4fc; word-break: break-all;">{{ record.hash }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Three Required Feature Cards -->
+<section class="grid-3">
+    <div class="feature-card">
+        <div class="feature-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="4 17 10 11 4 5"></polyline>
+                <line x1="12" y1="19" x2="20" y2="19"></line>
+            </svg>
+        </div>
+        <div class="feature-number">Core Feature 01</div>
+        <h3>PASSWORD HASHING</h3>
+        <p>Passwords are converted into cryptographic hashes before storage.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            </svg>
+        </div>
+        <div class="feature-number">Core Feature 02</div>
+        <h3>RANDOM SALTING</h3>
+        <p>Each password receives a unique random salt.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon-wrapper">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+        </div>
+        <div class="feature-number">Core Feature 03</div>
+        <h3>SECURE VERIFICATION</h3>
+        <p>Login recreates the hash and compares it with the stored hash.</p>
+    </div>
+</section>
+
+<!-- Required Section: Real-World Demonstration (ShopKart) -->
+<div class="card" style="background: linear-gradient(135deg, rgba(40, 116, 240, 0.12) 0%, rgba(17, 24, 39, 0.95) 100%); border: 1px solid rgba(40, 116, 240, 0.4); margin-bottom: 40px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+        <div style="max-width: 680px;">
+            <div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(40, 116, 240, 0.2); color: #38bdf8; padding: 4px 12px; border-radius: 12px; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; margin-bottom: 12px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                Standalone Flipkart & Amazon Style Store
+            </div>
+            <h2 style="font-size: 1.6rem; font-weight: 700; color: #f8fafc; margin-bottom: 10px;">
+                Real-World Demonstration
+            </h2>
+            <p style="color: #cbd5e1; font-size: 0.98rem; line-height: 1.6;">
+                See how the same password-storage mechanism can be used in a fictional shopping website login. The shopping website is completely separated as an independent storefront with an authentic Flipkart/Amazon look.
+            </p>
+            <div style="margin-top: 10px; font-size: 0.85rem; color: #94a3b8;">
+                Demo Credentials: <strong>demo@shopkart.local</strong> &bull; Password: <strong>Demo@123</strong>
+            </div>
+        </div>
+        <div>
+            <a href="{{ url_for('shopping_demo') }}" class="btn btn-primary" style="background: #2874f0; border: none; padding: 12px 24px; font-size: 1rem; box-shadow: 0 4px 14px rgba(40, 116, 240, 0.4);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+                Try ShopKart Demo &rarr;
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Academic Notice -->
+<div class="note-box">
+    <div class="note-box-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        Academic Security Note
+    </div>
+    {{ academic_note }}
+</div>
+{% endblock %}

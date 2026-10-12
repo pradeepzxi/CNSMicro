@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}Main Cryptography Demo - Secure Password Storage System{% endblock %}
+
+{% block content %}
+<div class="hero" style="padding-top: 10px; margin-bottom: 24px;">
+    <h1 class="hero-title" style="font-size: 2.2rem;">Main Cryptography Demonstration</h1>
+    <p class="hero-subtitle">Interactive laboratory proving how random salting and SHA-256 defend credentials against rainbow tables and collision attacks.</p>
+</div>
+
+<!-- Primary Feature: Same Password, Different Salt -->
+<div class="card" style="margin-bottom: 32px; border-color: rgba(56, 189, 248, 0.4); box-shadow: 0 8px 30px rgba(2, 132, 199, 0.15);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+        <div class="card-title" style="margin-bottom: 0;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            Same Password, Different Salt
+        </div>
+        <span class="stat-badge badge-cyan">CSPRNG os.urandom(16) &bull; SHA-256</span>
+    </div>
+
+    <p style="color: var(--text-secondary); margin-bottom: 20px; font-size: 0.95rem;">
+        Enter any password below (defaulting to <code>Hello123</code>). The Python server generates two fresh, independent 16-byte random salts and hashes the identical password string with both.
+    </p>
+
+    <!-- Interactive Input Form (Pure Python Processing) -->
+    <form method="POST" action="{{ url_for('demo') }}" style="margin-bottom: 28px;">
+        <div class="grid-2">
+            <div>
+                <label for="test_password" class="form-label">Demonstration Password</label>
+                <input 
+                    type="text" 
+                    id="test_password" 
+                    name="test_password" 
+                    class="form-input" 
+                    value="{{ sample_password }}" 
+                    required
+                >
+                <div class="form-help">Passwords in demonstration mode are never stored or logged.</div>
+            </div>
+
+            <div>
+                <label for="verify_password" class="form-label">Verification Candidate (Tamper Test)</label>
+                <input 
+                    type="text" 
+                    id="verify_password" 
+                    name="verify_password" 
+                    class="form-input" 
+                    value="{{ verify_test_password }}" 
+                    required
+                >
+                <div class="form-help">Modify even 1 letter to observe verification failure.</div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            Generate Fresh Salts & Compute SHA-256 Hashes
+        </button>
+    </form>
+
+    <!-- Side-by-Side Comparison of Salt A vs Salt B -->
+    <div class="grid-2" style="margin-bottom: 24px;">
+        <!-- Instance A -->
+        <div style="background: rgba(2, 132, 199, 0.06); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: var(--radius-md); padding: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <strong style="color: #38bdf8; font-size: 1rem;">Salt A & Hash A</strong>
+                <span class="stat-badge badge-cyan">Trial A</span>
+            </div>
+            
+            <div style="margin-bottom: 12px;">
+                <div class="code-box-header"><span>Generate Salt A (16 Bytes / 32 Hex)</span></div>
+                <div class="code-box">{{ salt_a_hex }}</div>
+            </div>
+
+            <div>
+                <div class="code-box-header"><span>Generate Hash A: SHA-256(Salt A + Password)</span></div>
+                <div class="code-box" style="color: #38bdf8;">{{ hash_a }}</div>
+            </div>
+        </div>
+
+        <!-- Instance B -->
+        <div style="background: rgba(99, 102, 241, 0.06); border: 1px solid rgba(129, 140, 248, 0.25); border-radius: var(--radius-md); padding: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <strong style="color: #a5b4fc; font-size: 1rem;">Salt B & Hash B</strong>
+                <span class="stat-badge badge-cyan">Trial B</span>
+            </div>
+
+            <div style="margin-bottom: 12px;">
+                <div class="code-box-header"><span>Generate Salt B (16 Bytes / 32 Hex)</span></div>
+                <div class="code-box">{{ salt_b_hex }}</div>
+            </div>
+
+            <div>
+                <div class="code-box-header"><span>Generate Hash B: SHA-256(Salt B + Password)</span></div>
+                <div class="code-box" style="color: #a5b4fc;">{{ hash_b }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mathematical Non-Equality Assertion Display -->
+    <div style="background: var(--bg-input); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; text-align: center; margin-bottom: 20px;">
+        <div style="font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; margin-bottom: 8px;">
+            Cryptographic Comparison
+        </div>
+        <div style="font-family: var(--font-mono); font-size: 1.4rem; font-weight: 800; color: {% if hashes_are_different %}#34d399{% else %}#f87171{% endif %};">
+            Hash A &ne; Hash B
+        </div>
+        <div style="margin-top: 10px; color: var(--text-primary); font-size: 0.95rem; font-weight: 500;">
+            "The same password can produce different hashes when different random salts are used."
+        </div>
+    </div>
+</div>
+
+<!-- Verification Check Simulation -->
+<div class="card">
+    <div class="card-title">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+        Zero-Knowledge Verification Simulation
+    </div>
+    <p style="color: var(--text-secondary); margin-bottom: 16px; font-size: 0.92rem;">
+        Testing candidate input <code>"{{ verify_test_password }}"</code> against stored <strong>Salt A</strong> and <strong>Hash A</strong> using constant-time comparison (<code>hmac.compare_digest</code>).
+    </p>
+
+    <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap; margin-bottom: 16px;">
+        <div>
+            <span style="color: var(--text-muted); font-size: 0.82rem;">Candidate Tested:</span>
+            <div style="font-family: var(--font-mono); font-weight: bold; color: var(--text-primary);">
+                "{{ verify_test_password }}"
+            </div>
+        </div>
+        <div>
+            <span style="color: var(--text-muted); font-size: 0.82rem;">Verification Status:</span>
+            <div>
+                {% if is_match %}
+                    <span class="stat-badge badge-success" style="font-size: 0.92rem; padding: 6px 14px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        MATCH - Authentication Successful
+                    </span>
+                {% else %}
+                    <span class="stat-badge badge-danger" style="font-size: 0.92rem; padding: 6px 14px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        MISMATCH - Authentication Rejected
+                    </span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="code-box-header"><span>Computed Hash of Candidate with Salt A</span></div>
+        <div class="code-box" style="{% if is_match %}color: #34d399;{% else %}color: #f87171;{% endif %}">
+            {{ computed_verify_hash }}
+        </div>
+    </div>
+</div>
+{% endblock %}

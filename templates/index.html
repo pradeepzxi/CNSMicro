@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopKart — Online Shopping for Mobiles, Electronics, Fashion & More</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #2874f0;
+            --primary-dark: #1d4ed8;
+            --accent-orange: #fb641b;
+            --accent-orange-hover: #e65100;
+            --accent-yellow: #ffe500;
+            --success: #388e3c;
+            --bg-body: #f1f3f6;
+            --bg-card: #ffffff;
+            --text-main: #212121;
+            --text-muted: #878787;
+            --border-color: #e0e0e0;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.4;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        /* Top Header */
+        .header {
+            background: var(--primary);
+            color: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            gap: 20px;
+        }
+
+        .brand-logo {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: #ffffff;
+        }
+
+        .brand-title {
+            font-size: 1.6rem;
+            font-weight: 900;
+            font-style: italic;
+            line-height: 1;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-sub {
+            font-size: 0.72rem;
+            font-style: italic;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            margin-top: 2px;
+        }
+
+        .brand-plus {
+            color: var(--accent-yellow);
+            font-weight: 700;
+        }
+
+        /* Search Bar */
+        .search-container {
+            flex: 1;
+            max-width: 540px;
+            background: #ffffff;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            height: 38px;
+            overflow: hidden;
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            padding: 0 16px;
+            font-size: 0.9rem;
+            color: #212121;
+            outline: none;
+            background: transparent;
+        }
+
+        .search-btn {
+            background: transparent;
+            border: none;
+            padding: 0 16px;
+            color: var(--primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Header Navigation Items */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-login-btn {
+            background: #ffffff;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 6px 32px;
+            border-radius: 2px;
+            text-decoration: none;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+        }
+
+        .nav-login-btn:hover {
+            background: #f8fafc;
+            color: var(--primary-dark);
+        }
+
+        .nav-cart-btn {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Category Strip */
+        .category-strip {
+            background: #ffffff;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+            margin-bottom: 14px;
+        }
+
+        .category-flex {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 10px;
+            overflow-x: auto;
+        }
+
+        .cat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #333333;
+            text-decoration: none;
+            min-width: 80px;
+            text-align: center;
+            transition: color 0.15s ease;
+        }
+
+        .cat-item:hover {
+            color: var(--primary);
+        }
+
+        .cat-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Main Content Layout */
+        main {
+            flex: 1;
+            padding-bottom: 40px;
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            background: linear-gradient(90deg, #0d47a1 0%, #1976d2 60%, #0288d1 100%);
+            border-radius: 4px;
+            padding: 28px 36px;
+            color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .hero-banner h2 {
+            font-size: 2rem;
+            font-weight: 900;
+            margin: 8px 0 4px;
+            color: #ffffff;
+        }
+
+        .hero-banner p {
+            font-size: 0.95rem;
+            color: #e0f2fe;
+            margin: 0;
+        }
+
+        .hero-btn {
+            background: var(--accent-orange);
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 0.95rem;
+            padding: 12px 28px;
+            border-radius: 2px;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            transition: background 0.2s;
+        }
+
+        .hero-btn:hover {
+            background: var(--accent-orange-hover);
+        }
+
+        /* Flash Message Alerts */
+        .flash-alert {
+            background: #dbeafe;
+            border-left: 4px solid var(--primary);
+            color: #1e40af;
+            padding: 12px 18px;
+            margin-bottom: 20px;
+            border-radius: 2px;
+            font-weight: 600;
+            font-size: 0.92rem;
+        }
+
+        .flash-danger {
+            background: #fee2e2;
+            border-left: 4px solid #ef4444;
+            color: #b91c1c;
+        }
+
+        /* Flipkart Split Login & Register Box */
+        .auth-container {
+            display: grid;
+            grid-template-columns: 2fr 3fr;
+            background: #ffffff;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+            overflow: hidden;
+            margin-bottom: 28px;
+        }
+
+        @media (max-width: 768px) {
+            .auth-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .auth-panel-left {
+            background: var(--primary);
+            padding: 40px 32px;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .auth-panel-left h2 {
+            font-size: 1.85rem;
+            font-weight: 800;
+            margin-bottom: 14px;
+        }
+
+        .auth-panel-left p {
+            font-size: 1rem;
+            color: #dbeafe;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .auth-panel-right {
+            background: #ffffff;
+            padding: 36px 40px;
+        }
+
+        /* Tabs */
+        .auth-tabs {
+            display: flex;
+            border-bottom: 2px solid #f1f5f9;
+            margin-bottom: 24px;
+            gap: 20px;
+        }
+
+        .auth-tab {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            padding-bottom: 10px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+        }
+
+        .auth-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 22px;
+        }
+
+        .form-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            display: block;
+            font-weight: 600;
+        }
+
+        .form-input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            padding: 8px 0;
+            font-size: 0.95rem;
+            color: #212121;
+            background: transparent;
+            outline: none;
+            transition: border-bottom-color 0.2s;
+        }
+
+        .form-input:focus {
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .btn-submit {
+            background: var(--accent-orange);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border: none;
+            border-radius: 2px;
+            padding: 12px;
+            width: 100%;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(251, 100, 27, 0.4);
+            transition: background 0.2s;
+        }
+
+        .btn-submit:hover {
+            background: var(--accent-orange-hover);
+        }
+
+        .demo-pill-btn {
+            background: #fff7ed;
+            border: 1px dashed #f97316;
+            color: #c2410c;
+            font-size: 0.82rem;
+            font-weight: 700;
+            padding: 8px 12px;
+            border-radius: 2px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 14px;
+            text-align: center;
+        }
+
+        .demo-pill-btn:hover {
+            background: #ffedd5;
+        }
+
+        /* Products Showcase */
+        .products-container {
+            background: #ffffff;
+            border-radius: 4px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            margin-bottom: 32px;
+        }
+
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 14px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 16px;
+        }
+
+        .prod-card {
+            border: 1px solid #f0f0f0;
+            border-radius: 4px;
+            padding: 16px;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+        }
+
+        .prod-card:hover {
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+            border-color: var(--border-color);
+        }
+
+        .prod-img-box {
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fafafa;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            font-size: 3rem;
+        }
+
+        .prod-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #212121;
+            margin: 0 0 6px;
+            line-height: 1.3;
+        }
+
+        .prod-rating {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .rating-badge {
+            background: var(--success);
+            color: #ffffff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 2px;
+        }
+
+        .prod-price-row {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .prod-price {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #212121;
+        }
+
+        .prod-orig-price {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+
+        .prod-discount {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .btn-buy {
+            background: #ff9f00;
+            color: #ffffff;
+            border: none;
+            font-weight: 700;
+            font-size: 0.88rem;
+            padding: 10px;
+            border-radius: 2px;
+            cursor: pointer;
+            margin-top: auto;
+            transition: background 0.15s;
+        }
+
+        .btn-buy:hover {
+            background: #f59e0b;
+        }
+
+        /* Clean Flipkart Style Footer */
+        .footer {
+            background: #172337;
+            color: #878787;
+            padding: 40px 0 24px;
+            font-size: 0.78rem;
+            margin-top: auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr) 2fr;
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+
+        @media (max-width: 768px) {
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .footer-col h5 {
+            color: #878787;
+            text-transform: uppercase;
+            font-size: 0.72rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-col li {
+            margin-bottom: 6px;
+        }
+
+        .footer-col a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.75rem;
+        }
+
+        .footer-col a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-bottom-bar {
+            border-top: 1px solid #454d5e;
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            color: #ffffff;
+        }
+
+        /* THE FOOTER DATABASE BUTTON */
+        .footer-db-btn {
+            background: #2563eb;
+            color: #ffffff;
+            font-size: 0.85rem;
+            font-weight: 800;
+            padding: 8px 18px;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+            transition: all 0.2s ease;
+        }
+
+        .footer-db-btn:hover {
+            background: #1d4ed8;
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.35);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Signature Flipkart Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-inner">
+                <!-- ShopKart Brand -->
+                <a href="{{ url_for('index') }}" class="brand-logo">
+                    <span class="brand-title">ShopKart</span>
+                    <span class="brand-sub">
+                        Explore <span class="brand-plus">Plus</span>
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="#ffe500"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    </span>
+                </a>
+
+                <!-- Search Input -->
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search for products, brands and more">
+                    <button type="button" class="search-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Navigation Actions -->
+                <div class="header-actions">
+                    {% if current_user %}
+                        <a href="{{ url_for('account') }}" class="nav-login-btn">
+                            {{ current_user.split('@')[0]|capitalize }}
+                        </a>
+                        <a href="{{ url_for('logout') }}" style="color: #ffffff; font-size: 0.85rem; text-decoration: underline;">
+                            Logout
+                        </a>
+                    {% else %}
+                        <a href="#login-box" class="nav-login-btn">
+                            Login
+                        </a>
+                    {% endif %}
+
+                    <!-- Cart -->
+                    <a href="#products" class="nav-cart-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        <span>Cart</span>
+                        <span style="background: var(--accent-yellow); color: #212121; font-size: 0.72rem; font-weight: 800; padding: 1px 6px; border-radius: 8px;">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Category Strip -->
+    <div class="category-strip">
+        <div class="container">
+            <div class="category-flex">
+                <a href="#products" class="cat-item">
+                    <span class="cat-icon">📱</span>
+                    <span>Mobiles</span>
+                </a>
+                <a href="#products" class="cat-item">
+                    <span class="cat-icon">🎧</span>
+                    <span>Audio &amp; Gadgets</span>
+                </a>
+                <a href="#products" class="cat-item">
+                    <span class="cat-icon">💻</span>
+                    <span>Electronics</span>
+                </a>
+                <a href="#products" class="cat-item">
+                    <span class="cat-icon">⌚</span>
+                    <span>Smart Watches</span>
+                </a>
+                <a href="#products" class="cat-item">
+                    <span class="cat-icon">🎒</span>
+                    <span>Fashion &amp; Bags</span>
+                </a>
+                <a href="#products" class="cat-item">
+                    <span class="cat-icon">🏠</span>
+                    <span>Home &amp; Kitchen</span>
+                </a>
+                <a href="#products" class="cat-item">
+                    <span class="cat-icon">⚡</span>
+                    <span style="color: var(--primary);">Top Offers</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="container">
+
+        <!-- Flash Message Alerts -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-alert {% if 'danger' in category %}flash-danger{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Big E-Commerce Festive Banner -->
+        <div class="hero-banner">
+            <div>
+                <span style="background: var(--accent-yellow); color: #172337; font-weight: 800; font-size: 0.75rem; padding: 2px 8px; border-radius: 2px; text-transform: uppercase;">
+                    Big Savings Festival
+                </span>
+                <h2>Mega Electronics Days &bull; 50-80% Off</h2>
+                <p>Unbeatable prices on Top Brands &bull; Extra 10% Off on SuperCards</p>
+            </div>
+            <div>
+                <a href="#products" class="hero-btn">
+                    Shop Deals Now
+                </a>
+            </div>
+        </div>
+
+        <!-- Flipkart Split Login & Registration Form -->
+        <div class="auth-container" id="login-box">
+            <!-- Left Blue Panel -->
+            <div class="auth-panel-left">
+                <div>
+                    <h2>Login / Sign Up</h2>
+                    <p>Get access to your Orders, Wishlist and Personalized Recommendations on ShopKart</p>
+                </div>
+                <div style="text-align: center; margin-top: 40px; opacity: 0.85;">
+                    <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.5">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Right White Form Panel with Tabs -->
+            <div class="auth-panel-right">
+                <div class="auth-tabs">
+                    <div class="auth-tab active" id="tab-login" onclick="showTab('login')">
+                        Login
+                    </div>
+                    <div class="auth-tab" id="tab-register" onclick="showTab('register')">
+                        New Account
+                    </div>
+                </div>
+
+                <!-- Login Form View -->
+                <div id="view-login">
+                    <form method="POST" action="{{ url_for('login') }}">
+                        <div class="form-group">
+                            <label class="form-label" for="login_user">Enter Email / Username</label>
+                            <input 
+                                type="text" 
+                                id="login_user" 
+                                name="username" 
+                                class="form-input" 
+                                placeholder="demo@shopkart.local" 
+                                value="demo@shopkart.local" 
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="login_pass">Enter Password</label>
+                            <input 
+                                type="password" 
+                                id="login_pass" 
+                                name="password" 
+                                class="form-input" 
+                                placeholder="Enter password" 
+                                value="Demo@123" 
+                                required
+                            >
+                        </div>
+
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 20px;">
+                            By continuing, you agree to ShopKart's Terms of Use and Privacy Policy.
+                        </div>
+
+                        <button type="submit" class="btn-submit">
+                            Login
+                        </button>
+                    </form>
+
+                    <button type="button" class="demo-pill-btn" onclick="fillDemoCredentials()">
+                        ⚡ Fill Demo Account (demo@shopkart.local)
+                    </button>
+                </div>
+
+                <!-- Register Form View -->
+                <div id="view-register" style="display: none;">
+                    <form method="POST" action="{{ url_for('register') }}">
+                        <div class="form-group">
+                            <label class="form-label" for="reg_user">Enter Email / Username</label>
+                            <input 
+                                type="text" 
+                                id="reg_user" 
+                                name="username" 
+                                class="form-input" 
+                                placeholder="Enter your username" 
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="reg_pass">Create Password (Min 6 Characters)</label>
+                            <input 
+                                type="password" 
+                                id="reg_pass" 
+                                name="password" 
+                                class="form-input" 
+                                placeholder="Create password" 
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="reg_confirm">Confirm Password</label>
+                            <input 
+                                type="password" 
+                                id="reg_confirm" 
+                                name="confirm_password" 
+                                class="form-input" 
+                                placeholder="Re-enter password" 
+                                required
+                            >
+                        </div>
+
+                        <button type="submit" class="btn-submit" style="background: var(--primary);">
+                            Continue &amp; Create Account
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Products Showcase -->
+        <div class="products-container" id="products">
+            <div class="products-header">
+                <div>
+                    <h3 style="font-size: 1.4rem; font-weight: 800; color: #212121; margin: 0 0 4px;">
+                        Best Deals on Electronics &amp; Gadgets
+                    </h3>
+                    <span style="font-size: 0.82rem; color: var(--text-muted);">Top selling products across all categories</span>
+                </div>
+                <a href="#products" style="background: var(--primary); color: #ffffff; font-weight: 700; font-size: 0.82rem; padding: 8px 18px; border-radius: 2px; text-decoration: none;">
+                    VIEW ALL
+                </a>
+            </div>
+
+            <div class="products-grid">
+                {% for prod in products %}
+                    <div class="prod-card">
+                        <div style="display: flex; justify-content: flex-end; margin-bottom: 6px;">
+                            <span style="background: #eff6ff; color: var(--primary); font-weight: 800; font-style: italic; font-size: 0.68rem; padding: 2px 6px; border-radius: 2px;">
+                                Assured &#10003;
+                            </span>
+                        </div>
+
+                        <div class="prod-img-box">
+                            {% if prod.category == 'Audio' %}🎧
+                            {% elif prod.category == 'Peripherals' %}⌨️
+                            {% elif prod.category == 'Wearables' %}⌚
+                            {% else %}🎒{% endif %}
+                        </div>
+
+                        <h4 class="prod-name">{{ prod.name }}</h4>
+
+                        <div class="prod-rating">
+                            <span class="rating-badge">4.5 &#9733;</span>
+                            <span style="font-size: 0.75rem; color: var(--text-muted);">(3,124 ratings)</span>
+                        </div>
+
+                        <div class="prod-price-row">
+                            <span class="prod-price">{{ prod.price }}</span>
+                            <span class="prod-orig-price">{{ prod.original_price }}</span>
+                            <span class="prod-discount">40% off</span>
+                        </div>
+
+                        <div style="font-size: 0.72rem; color: var(--success); font-weight: 600; margin-bottom: 12px;">
+                            Free delivery by Tomorrow
+                        </div>
+
+                        <button type="button" class="btn-buy" onclick="document.getElementById('login_user').focus(); window.location.hash = 'login-box';">
+                            BUY NOW
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Clean Authentic E-Commerce Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h5>ABOUT</h5>
+                    <ul>
+                        <li><a href="#about">Contact Us</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#about">Careers</a></li>
+                        <li><a href="#about">ShopKart Stories</a></li>
+                        <li><a href="#about">Press</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h5>HELP</h5>
+                    <ul>
+                        <li><a href="#help">Payments</a></li>
+                        <li><a href="#help">Shipping</a></li>
+                        <li><a href="#help">Cancellation &amp; Returns</a></li>
+                        <li><a href="#help">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h5>CONSUMER POLICY</h5>
+                    <ul>
+                        <li><a href="#policy">Cancellation &amp; Returns</a></li>
+                        <li><a href="#policy">Terms Of Use</a></li>
+                        <li><a href="#policy">Security</a></li>
+                        <li><a href="#policy">Privacy</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h5>SOCIAL</h5>
+                    <ul>
+                        <li><a href="#social">Facebook</a></li>
+                        <li><a href="#social">Twitter / X</a></li>
+                        <li><a href="#social">YouTube</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col" style="border-left: 1px solid #454d5e; padding-left: 20px;">
+                    <h5>Registered Office Address:</h5>
+                    <div style="color: #ffffff; line-height: 1.5; font-size: 0.75rem;">
+                        ShopKart Internet Private Limited,<br>
+                        Outer Ring Road, Bengaluru, 560103, Karnataka, India<br>
+                        CIN : U51109KA2012PTC066107
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Bar with Database Navigation Button -->
+            <div class="footer-bottom-bar">
+                <div>
+                    &copy; 2026 ShopKart.com &bull; All Rights Reserved
+                </div>
+
+                <!-- DEDICATED DATABASE NAVIGATION BUTTON -->
+                <div>
+                    <a href="{{ url_for('database') }}" class="footer-db-btn" title="Inspect user credentials in database">
+                        🗄️ Backend Database (users.json) &rarr;
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive JS -->
+    <script>
+        function showTab(tab) {
+            if (tab === 'login') {
+                document.getElementById('view-login').style.display = 'block';
+                document.getElementById('view-register').style.display = 'none';
+                document.getElementById('tab-login').classList.add('active');
+                document.getElementById('tab-register').classList.remove('active');
+            } else {
+                document.getElementById('view-login').style.display = 'none';
+                document.getElementById('view-register').style.display = 'block';
+                document.getElementById('tab-login').classList.remove('active');
+                document.getElementById('tab-register').classList.add('active');
+            }
+        }
+
+        function fillDemoCredentials() {
+            document.getElementById('login_user').value = 'demo@shopkart.local';
+            document.getElementById('login_pass').value = 'Demo@123';
+            document.getElementById('login_user').focus();
+        }
+    </script>
+</body>
+</html>

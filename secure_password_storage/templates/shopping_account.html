@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - ShopKart Customer Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body.fk-account-body {
+            background-color: #f1f3f6;
+            color: #212121;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-image: none;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .fk-app-container {
+            width: 100%;
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        /* Top Minimal Utility Header */
+        .fk-utility-strip {
+            background: #172337;
+            padding: 6px 0;
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+        .fk-utility-strip-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .fk-utility-strip a {
+            color: #38bdf8;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* Flipkart Signature Header */
+        .fk-main-header {
+            background: #2874f0;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        .fk-header-flex {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .fk-logo-main {
+            font-size: 1.55rem;
+            font-weight: 900;
+            font-style: italic;
+            color: #ffffff;
+            line-height: 1;
+            letter-spacing: -0.5px;
+            text-decoration: none;
+        }
+        .fk-logo-sub {
+            font-size: 0.72rem;
+            font-style: italic;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            margin-top: 2px;
+        }
+        .fk-logo-plus {
+            color: #ffe500;
+            font-weight: 700;
+        }
+
+        .fk-search-box {
+            flex: 1;
+            max-width: 540px;
+            background: #ffffff;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            height: 38px;
+        }
+        .fk-search-input-field {
+            flex: 1;
+            border: none;
+            padding: 0 16px;
+            font-size: 0.9rem;
+            color: #212121;
+            outline: none;
+            background: transparent;
+        }
+
+        .fk-store-footer {
+            background: #172337;
+            color: #878787;
+            padding: 32px 0 20px;
+            font-size: 0.78rem;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body class="fk-account-body">
+
+    <!-- Top Utility Bar with return link -->
+    <div class="fk-utility-strip">
+        <div class="fk-app-container">
+            <div class="fk-utility-strip-inner">
+                <div>
+                    <a href="{{ url_for('index') }}">&larr; Return to SecurePass Main Project Portal</a>
+                </div>
+                <div>
+                    <span>ShopKart Customer Account &bull; Authenticated Session</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flipkart Signature Header Bar -->
+    <header class="fk-main-header">
+        <div class="fk-app-container">
+            <div class="fk-header-flex">
+                <a href="{{ url_for('shopping_demo') }}" style="text-decoration: none;">
+                    <div class="fk-logo-main">ShopKart</div>
+                    <div class="fk-logo-sub">
+                        Explore <span class="fk-logo-plus">Plus</span>
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="#ffe500"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    </div>
+                </a>
+
+                <div class="fk-search-box">
+                    <input type="text" class="fk-search-input-field" placeholder="Search for products, brands and more" readonly>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <a href="{{ url_for('shopping_demo') }}" style="color: #ffffff; font-weight: 700; font-size: 0.92rem; text-decoration: none;">
+                        Store Home
+                    </a>
+                    <a href="{{ url_for('shopping_logout') }}" style="background: #ef4444; color: #ffffff; font-weight: 700; font-size: 0.85rem; padding: 6px 16px; border-radius: 2px; text-decoration: none;">
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Account Container -->
+    <main class="fk-app-container" style="flex: 1; padding: 24px 16px;">
+        <div class="grid-2" style="grid-template-columns: 280px 1fr; gap: 24px; align-items: start;">
+            
+            <!-- Left Sidebar Menu -->
+            <div>
+                <!-- User Profile Summary -->
+                <div style="background: #ffffff; border-radius: 4px; border: 1px solid #e2e8f0; padding: 16px; display: flex; align-items: center; gap: 14px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
+                    <div style="width: 50px; height: 50px; border-radius: 50%; background: #2874f0; color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.25rem;">
+                        {{ username[0]|upper }}
+                    </div>
+                    <div>
+                        <div style="font-size: 0.72rem; color: #878787;">Hello,</div>
+                        <div style="font-weight: 800; font-size: 0.95rem; color: #212121; word-break: break-all;">
+                            {{ username }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation List -->
+                <div style="background: #ffffff; border-radius: 4px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
+                    <div style="padding: 14px 18px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; font-weight: 700; color: #2874f0; background: #eff6ff;">
+                        <span>MY ORDERS</span>
+                        <span style="font-size: 0.75rem; background: #2874f0; color: #fff; padding: 1px 6px; border-radius: 10px;">0</span>
+                    </div>
+
+                    <div style="padding: 14px 18px; border-bottom: 1px solid #f1f5f9; font-weight: 700; color: #333333; font-size: 0.88rem;">
+                        ACCOUNT SETTINGS
+                    </div>
+                    <div style="padding: 10px 18px 10px 32px; font-size: 0.85rem; color: #555555;">Profile Information</div>
+                    <div style="padding: 10px 18px 10px 32px; font-size: 0.85rem; color: #555555;">Manage Addresses</div>
+                    <div style="padding: 10px 18px 10px 32px; font-size: 0.85rem; color: #555555;">PAN Card Information</div>
+
+                    <div style="padding: 14px 18px; border-bottom: 1px solid #f1f5f9; font-weight: 700; color: #333333; font-size: 0.88rem;">
+                        MY STUFF
+                    </div>
+                    <div style="padding: 10px 18px 10px 32px; font-size: 0.85rem; color: #555555;">My Coupons</div>
+                    <div style="padding: 10px 18px 10px 32px; font-size: 0.85rem; color: #555555;">My Reviews & Ratings</div>
+                    <div style="padding: 10px 18px 10px 32px; font-size: 0.85rem; color: #555555;">My Wishlist (0)</div>
+
+                    <div style="padding: 16px 18px; border-top: 1px solid #f1f5f9;">
+                        <a href="{{ url_for('shopping_logout') }}" style="color: #ef4444; font-weight: 700; font-size: 0.88rem; text-decoration: none;">
+                            Logout from ShopKart
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Main Account View -->
+            <div>
+                <!-- Top Status Card -->
+                <div style="background: #ffffff; border-radius: 4px; border: 1px solid #e2e8f0; padding: 24px 28px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <span style="background: #dcfce7; color: #15803d; border: 1px solid #86efac; font-size: 0.75rem; font-weight: 800; padding: 3px 10px; border-radius: 12px;">
+                            Demo Login Successful
+                        </span>
+                        <span style="font-size: 0.8rem; color: #878787;">Customer Session Active</span>
+                    </div>
+
+                    <h1 style="font-size: 1.85rem; font-weight: 900; color: #212121; margin: 0 0 6px;">
+                        Welcome to ShopKart!
+                    </h1>
+                    <p style="color: #4b5563; font-size: 0.95rem; margin: 0 0 10px;">
+                        Account: <strong>{{ username }}</strong>
+                    </p>
+                    <p style="color: #2874f0; font-size: 0.95rem; font-weight: 700; margin: 0;">
+                        "Your password was verified using the Secure Password Storage System."
+                    </p>
+                </div>
+
+                <!-- 4 Status Cards -->
+                <div class="grid-4" style="gap: 14px; margin-bottom: 20px;">
+                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 4px; padding: 18px;">
+                        <div style="font-size: 0.75rem; text-transform: uppercase; color: #878787; font-weight: 700; margin-bottom: 4px;">My Orders</div>
+                        <div style="font-size: 1.15rem; font-weight: 800; color: #212121;">0 Demo Orders</div>
+                    </div>
+
+                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 4px; padding: 18px;">
+                        <div style="font-size: 0.75rem; text-transform: uppercase; color: #878787; font-weight: 700; margin-bottom: 4px;">Wishlist</div>
+                        <div style="font-size: 1.15rem; font-weight: 800; color: #212121;">0 Items</div>
+                    </div>
+
+                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 4px; padding: 18px;">
+                        <div style="font-size: 0.75rem; text-transform: uppercase; color: #878787; font-weight: 700; margin-bottom: 4px;">Shopping Cart</div>
+                        <div style="font-size: 1.15rem; font-weight: 800; color: #212121;">0 Items</div>
+                    </div>
+
+                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 4px; padding: 18px;">
+                        <div style="font-size: 0.75rem; text-transform: uppercase; color: #878787; font-weight: 700; margin-bottom: 4px;">Account Security</div>
+                        <div style="font-size: 0.95rem; font-weight: 800; color: #16a34a;">Password verified successfully</div>
+                    </div>
+                </div>
+
+                <!-- 5 Sections (Profile, Orders, Wishlist, Cart, Security) -->
+                <div style="background: #ffffff; border-radius: 4px; border: 1px solid #e2e8f0; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
+                    <h3 style="font-size: 1.25rem; font-weight: 800; color: #212121; margin: 0 0 18px; padding-bottom: 10px; border-bottom: 1px solid #f1f5f9;">
+                        Account Overview
+                    </h3>
+
+                    <div class="grid-2" style="gap: 16px; margin-bottom: 20px;">
+                        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 4px; padding: 16px;">
+                            <h4 style="font-size: 0.95rem; font-weight: 700; color: #212121; margin: 0 0 4px;">Profile</h4>
+                            <p style="font-size: 0.85rem; color: #64748b; margin: 0;">Account: {{ username }} &bull; Fictional Member</p>
+                        </div>
+
+                        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 4px; padding: 16px;">
+                            <h4 style="font-size: 0.95rem; font-weight: 700; color: #212121; margin: 0 0 4px;">Orders</h4>
+                            <p style="font-size: 0.85rem; color: #64748b; margin: 0;">0 Orders placed (Mock storefront)</p>
+                        </div>
+
+                        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 4px; padding: 16px;">
+                            <h4 style="font-size: 0.95rem; font-weight: 700; color: #212121; margin: 0 0 4px;">Wishlist</h4>
+                            <p style="font-size: 0.85rem; color: #64748b; margin: 0;">0 saved items in your wishlist</p>
+                        </div>
+
+                        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 4px; padding: 16px;">
+                            <h4 style="font-size: 0.95rem; font-weight: 700; color: #212121; margin: 0 0 4px;">Cart</h4>
+                            <p style="font-size: 0.85rem; color: #64748b; margin: 0;">0 items in cart (Checkout disabled)</p>
+                        </div>
+                    </div>
+
+                    <!-- Under Security Section -->
+                    <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 4px; padding: 18px;">
+                        <h4 style="font-size: 1rem; font-weight: 800; color: #15803d; margin: 0 0 12px; display: flex; align-items: center; gap: 8px;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            Under Security:
+                        </h4>
+
+                        <div class="grid-3" style="margin-bottom: 0;">
+                            <div style="background: #ffffff; border: 1px solid #86efac; border-radius: 4px; padding: 10px;">
+                                <div style="font-size: 0.72rem; text-transform: uppercase; color: #166534; font-weight: 700;">Authentication</div>
+                                <div style="font-size: 0.95rem; font-weight: 800; color: #15803d;">Verified</div>
+                            </div>
+
+                            <div style="background: #ffffff; border: 1px solid #86efac; border-radius: 4px; padding: 10px;">
+                                <div style="font-size: 0.72rem; text-transform: uppercase; color: #166534; font-weight: 700;">Password Storage</div>
+                                <div style="font-size: 0.95rem; font-weight: 800; color: #15803d;">Salted SHA-256</div>
+                            </div>
+
+                            <div style="background: #ffffff; border: 1px solid #86efac; border-radius: 4px; padding: 10px;">
+                                <div style="font-size: 0.72rem; text-transform: uppercase; color: #166534; font-weight: 700;">Password</div>
+                                <div style="font-size: 0.88rem; font-weight: 800; color: #15803d;">Never stored in plaintext</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="fk-store-footer">
+        <div class="fk-app-container">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                <div>&copy; 2026 ShopKart.com &bull; Fictional E-Commerce Customer Portal</div>
+                <div>
+                    <a href="{{ url_for('shopping_logout') }}" style="color: #ef4444; font-weight: 700; text-decoration: none;">
+                        Sign Out
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

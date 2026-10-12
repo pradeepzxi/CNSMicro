@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - ShopKart Customer Registration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body.fk-reg-body {
+            background-color: #f1f3f6;
+            color: #212121;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-image: none;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .fk-app-container {
+            width: 100%;
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        /* Top Minimal Utility Header */
+        .fk-utility-strip {
+            background: #172337;
+            padding: 6px 0;
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+        .fk-utility-strip-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .fk-utility-strip a {
+            color: #38bdf8;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* Flipkart Signature Header */
+        .fk-main-header {
+            background: #2874f0;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        .fk-header-flex {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .fk-logo-box {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+        }
+        .fk-logo-main {
+            font-size: 1.55rem;
+            font-weight: 900;
+            font-style: italic;
+            color: #ffffff;
+            line-height: 1;
+            letter-spacing: -0.5px;
+        }
+        .fk-logo-sub {
+            font-size: 0.72rem;
+            font-style: italic;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            margin-top: 2px;
+        }
+        .fk-logo-plus {
+            color: #ffe500;
+            font-weight: 700;
+        }
+
+        /* Flipkart Split Registration Box */
+        .fk-signup-box {
+            display: grid;
+            grid-template-columns: 2fr 3fr;
+            background: #ffffff;
+            border-radius: 4px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+            overflow: hidden;
+            margin: 36px auto;
+            max-width: 840px;
+            min-height: 480px;
+        }
+
+        @media (max-width: 768px) {
+            .fk-signup-box {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .fk-signup-left {
+            background: #2874f0;
+            padding: 44px 36px;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .fk-signup-right {
+            background: #ffffff;
+            padding: 40px 36px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .fk-store-input-group {
+            position: relative;
+            margin-bottom: 22px;
+        }
+        .fk-store-input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 10px 0;
+            font-size: 0.95rem;
+            color: #212121;
+            background: transparent;
+            outline: none;
+        }
+        .fk-store-input:focus {
+            border-bottom: 2px solid #2874f0;
+        }
+        .fk-store-label {
+            font-size: 0.8rem;
+            color: #878787;
+            margin-bottom: 4px;
+            display: block;
+            font-weight: 600;
+        }
+
+        .fk-orange-submit-btn {
+            background: #fb641b;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border: none;
+            border-radius: 2px;
+            padding: 12px;
+            width: 100%;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(251, 100, 27, 0.4);
+            transition: background 0.2s ease;
+        }
+        .fk-orange-submit-btn:hover {
+            background: #e65100;
+        }
+
+        .fk-store-footer {
+            background: #172337;
+            color: #878787;
+            padding: 30px 0 20px;
+            font-size: 0.78rem;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body class="fk-reg-body">
+
+    <!-- Top Utility Bar with return link -->
+    <div class="fk-utility-strip">
+        <div class="fk-app-container">
+            <div class="fk-utility-strip-inner">
+                <div>
+                    <a href="{{ url_for('index') }}">&larr; Return to SecurePass Main Project Portal</a>
+                </div>
+                <div>
+                    <span>ShopKart Customer Registration &bull; Fictional E-Commerce Storefront</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flipkart Signature Header Bar -->
+    <header class="fk-main-header">
+        <div class="fk-app-container">
+            <div class="fk-header-flex">
+                <a href="{{ url_for('shopping_demo') }}" class="fk-logo-box">
+                    <div class="fk-logo-main">ShopKart</div>
+                    <div class="fk-logo-sub">
+                        Explore <span class="fk-logo-plus">Plus</span>
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="#ffe500"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    </div>
+                </a>
+
+                <div style="color: #ffffff; font-size: 0.9rem; font-weight: 600;">
+                    Already have an account? 
+                    <a href="{{ url_for('shopping_demo') }}#login-box" style="color: #ffe500; font-weight: 700; text-decoration: none; margin-left: 6px;">
+                        Login
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Registration Section -->
+    <main class="fk-app-container" style="flex: 1;">
+        
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div style="max-width: 840px; margin: 20px auto 0;">
+                    {% for category, message in messages %}
+                        {% if category.startswith('shopkart_') %}
+                            {% set clean_cat = category.replace('shopkart_', '') %}
+                            <div style="background: #fee2e2; border-left: 4px solid #ef4444; color: #b91c1c; padding: 12px 18px; border-radius: 2px; font-weight: 600; font-size: 0.92rem; margin-bottom: 12px;">
+                                {{ message }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Flipkart Split Sign Up Box -->
+        <div class="fk-signup-box">
+            <!-- Left Blue Panel -->
+            <div class="fk-signup-left">
+                <div>
+                    <h2 style="font-size: 1.85rem; font-weight: 800; margin: 0 0 14px; color: #ffffff; line-height: 1.2;">
+                        Looks like you're new here!
+                    </h2>
+                    <p style="font-size: 1rem; color: #dbeafe; line-height: 1.5; margin: 0;">
+                        Sign up with your email or username to get started with ShopKart.
+                    </p>
+                </div>
+
+                <div style="text-align: center; margin-top: 40px; opacity: 0.85;">
+                    <svg width="90" height="90" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.5">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                        <line x1="23" y1="11" x2="17" y2="11"></line>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Right White Form Panel -->
+            <div class="fk-signup-right">
+                <form method="POST" action="{{ url_for('shopping_register') }}">
+                    <div class="fk-store-input-group">
+                        <label for="reg_username" class="fk-store-label">Enter Email / Mobile number</label>
+                        <input 
+                            type="text" 
+                            id="reg_username" 
+                            name="username" 
+                            class="fk-store-input" 
+                            placeholder="Enter your email or username" 
+                            value="{{ username|default('') }}" 
+                            required 
+                            autofocus
+                        >
+                    </div>
+
+                    <div class="fk-store-input-group">
+                        <label for="reg_password" class="fk-store-label">Set Password (minimum 6 characters)</label>
+                        <input 
+                            type="password" 
+                            id="reg_password" 
+                            name="password" 
+                            class="fk-store-input" 
+                            placeholder="Create password" 
+                            required
+                        >
+                    </div>
+
+                    <div class="fk-store-input-group">
+                        <label for="reg_confirm_password" class="fk-store-label">Confirm Password</label>
+                        <input 
+                            type="password" 
+                            id="reg_confirm_password" 
+                            name="confirm_password" 
+                            class="fk-store-input" 
+                            placeholder="Confirm password" 
+                            required
+                        >
+                    </div>
+
+                    <div style="font-size: 0.75rem; color: #878787; margin-bottom: 22px; line-height: 1.4;">
+                        By continuing, you agree to ShopKart's <span style="color: #2874f0; cursor: pointer;">Terms of Use</span> and <span style="color: #2874f0; cursor: pointer;">Privacy Policy</span>.
+                    </div>
+
+                    <button type="submit" class="fk-orange-submit-btn">
+                        CONTINUE
+                    </button>
+                </form>
+
+                <div style="text-align: center; margin-top: 24px; padding-top: 18px; border-top: 1px solid #f1f5f9;">
+                    <a href="{{ url_for('shopping_demo') }}#login-box" style="background: #ffffff; color: #2874f0; border: 1px solid #e0e0e0; font-weight: 700; font-size: 0.9rem; padding: 10px; width: 100%; display: block; border-radius: 2px; text-decoration: none; box-shadow: 0 1px 2px rgba(0,0,0,0.06);">
+                        Existing User? Log in
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="fk-store-footer">
+        <div class="fk-app-container">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                <div>&copy; 2026 ShopKart.com &bull; Fictional E-Commerce Customer Portal</div>
+                <div>
+                    <a href="{{ url_for('shopping_demo') }}" style="color: #38bdf8; text-decoration: none;">
+                        Storefront Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

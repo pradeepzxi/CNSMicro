@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Shopping Site for Mobiles, Electronics, Furniture, Grocery, Lifestyle, Books & More. Best Offers!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        body.fk-body {
+            background-color: #f1f3f6;
+            color: #212121;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-image: none;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .fk-app-container {
+            width: 100%;
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        /* Top Minimal Utility Header */
+        .fk-utility-strip {
+            background: #172337;
+            padding: 6px 0;
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+        .fk-utility-strip-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .fk-utility-strip a {
+            color: #38bdf8;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .fk-utility-strip a:hover {
+            text-decoration: underline;
+        }
+
+        /* Flipkart Signature Header */
+        .fk-main-header {
+            background: #2874f0;
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        .fk-header-flex {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .fk-logo-box {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+        }
+        .fk-logo-main {
+            font-size: 1.55rem;
+            font-weight: 900;
+            font-style: italic;
+            color: #ffffff;
+            line-height: 1;
+            letter-spacing: -0.5px;
+        }
+        .fk-logo-sub {
+            font-size: 0.72rem;
+            font-style: italic;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            margin-top: 2px;
+        }
+        .fk-logo-plus {
+            color: #ffe500;
+            font-weight: 700;
+        }
+
+        .fk-search-box {
+            flex: 1;
+            max-width: 540px;
+            background: #ffffff;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            height: 38px;
+        }
+        .fk-search-input-field {
+            flex: 1;
+            border: none;
+            padding: 0 16px;
+            font-size: 0.9rem;
+            color: #212121;
+            outline: none;
+            background: transparent;
+        }
+        .fk-search-btn-icon {
+            background: transparent;
+            border: none;
+            padding: 0 16px;
+            color: #2874f0;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .fk-nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .fk-white-login-btn {
+            background: #ffffff;
+            color: #2874f0;
+            font-weight: 700;
+            font-size: 0.95rem;
+            padding: 6px 36px;
+            border-radius: 2px;
+            text-decoration: none;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+        }
+        .fk-white-login-btn:hover {
+            background: #f8fafc;
+            color: #1d4ed8;
+        }
+
+        .fk-cart-btn {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Category Strip */
+        .fk-category-strip-white {
+            background: #ffffff;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+            margin-bottom: 14px;
+        }
+        .fk-category-flex {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 10px;
+            overflow-x: auto;
+        }
+        .fk-cat-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #333333;
+            text-decoration: none;
+            min-width: 80px;
+            text-align: center;
+        }
+        .fk-cat-card:hover {
+            color: #2874f0;
+        }
+        .fk-cat-card-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Hero Banner */
+        .fk-hero-carousel {
+            background: linear-gradient(90deg, #0d47a1 0%, #1976d2 60%, #0288d1 100%);
+            border-radius: 4px;
+            padding: 28px 36px;
+            color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        /* Split Login */
+        .fk-store-login-box {
+            display: grid;
+            grid-template-columns: 2fr 3fr;
+            background: #ffffff;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+            overflow: hidden;
+            margin-bottom: 28px;
+        }
+
+        @media (max-width: 768px) {
+            .fk-store-login-box {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .fk-store-login-left {
+            background: #2874f0;
+            padding: 40px 32px;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .fk-store-login-right {
+            background: #ffffff;
+            padding: 40px 36px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .fk-store-input-group {
+            position: relative;
+            margin-bottom: 24px;
+        }
+        .fk-store-input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 10px 0;
+            font-size: 0.95rem;
+            color: #212121;
+            background: transparent;
+            outline: none;
+        }
+        .fk-store-input:focus {
+            border-bottom: 2px solid #2874f0;
+        }
+        .fk-store-label {
+            font-size: 0.8rem;
+            color: #878787;
+            margin-bottom: 4px;
+            display: block;
+            font-weight: 600;
+        }
+
+        .fk-orange-submit-btn {
+            background: #fb641b;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border: none;
+            border-radius: 2px;
+            padding: 12px;
+            width: 100%;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(251, 100, 27, 0.4);
+        }
+        .fk-orange-submit-btn:hover {
+            background: #e65100;
+        }
+
+        /* Products Section */
+        .fk-products-container-white {
+            background: #ffffff;
+            border-radius: 4px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            margin-bottom: 32px;
+        }
+
+        .fk-store-prod-card {
+            border: 1px solid #f0f0f0;
+            border-radius: 4px;
+            padding: 16px;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+        }
+        .fk-store-prod-card:hover {
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+            border-color: #e0e0e0;
+        }
+
+        /* Clean Flipkart Style Footer */
+        .fk-store-footer {
+            background: #172337;
+            color: #878787;
+            padding: 40px 0 24px;
+            font-size: 0.78rem;
+            margin-top: auto;
+        }
+        .fk-footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr) 2fr;
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+        .fk-footer-col h5 {
+            color: #878787;
+            text-transform: uppercase;
+            font-size: 0.72rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+        .fk-footer-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .fk-footer-col li {
+            margin-bottom: 6px;
+        }
+        .fk-footer-col a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.75rem;
+        }
+        .fk-footer-col a:hover {
+            text-decoration: underline;
+        }
+        .fk-footer-bottom-bar {
+            border-top: 1px solid #454d5e;
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body class="fk-body">
+
+    <!-- Top Utility Bar with return link to main portal -->
+    <div class="fk-utility-strip">
+        <div class="fk-app-container">
+            <div class="fk-utility-strip-inner">
+                <div>
+                    <a href="{{ url_for('index') }}">&larr; Return to SecurePass Main Project Portal</a>
+                </div>
+                <div>
+                    <span>24x7 Customer Support &bull; Download App &bull; Fictional Storefront Demonstration</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flipkart Signature Header Bar -->
+    <header class="fk-main-header">
+        <div class="fk-app-container">
+            <div class="fk-header-flex">
+                <!-- Brand Logo -->
+                <a href="{{ url_for('shopping_demo') }}" class="fk-logo-box">
+                    <div class="fk-logo-main">ShopKart</div>
+                    <div class="fk-logo-sub">
+                        Explore <span class="fk-logo-plus">Plus</span>
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="#ffe500"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    </div>
+                </a>
+
+                <!-- Search Input -->
+                <div class="fk-search-box">
+                    <input type="text" class="fk-search-input-field" placeholder="Search for products, brands and more" readonly>
+                    <button type="button" class="fk-search-btn-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Navigation Actions -->
+                <div class="fk-nav-actions">
+                    {% if shopkart_user %}
+                        <a href="{{ url_for('shopping_account') }}" class="fk-white-login-btn">
+                            {{ shopkart_user.split('@')[0]|capitalize }}
+                        </a>
+                    {% else %}
+                        <a href="#login-box" class="fk-white-login-btn">
+                            Login
+                        </a>
+                    {% endif %}
+
+                    <a href="#cart" class="fk-cart-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        Cart
+                        <span style="background: #ffe500; color: #212121; font-size: 0.72rem; font-weight: 800; padding: 1px 6px; border-radius: 8px;">0</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Category Bar -->
+    <div class="fk-category-strip-white">
+        <div class="fk-app-container">
+            <div class="fk-category-flex">
+                <a href="#products" class="fk-cat-card">
+                    <span class="fk-cat-card-icon">📱</span>
+                    <span>Mobiles</span>
+                </a>
+                <a href="#products" class="fk-cat-card">
+                    <span class="fk-cat-card-icon">🎧</span>
+                    <span>Audio & Gadgets</span>
+                </a>
+                <a href="#products" class="fk-cat-card">
+                    <span class="fk-cat-card-icon">💻</span>
+                    <span>Electronics</span>
+                </a>
+                <a href="#products" class="fk-cat-card">
+                    <span class="fk-cat-card-icon">⌚</span>
+                    <span>Smart Watches</span>
+                </a>
+                <a href="#products" class="fk-cat-card">
+                    <span class="fk-cat-card-icon">🎒</span>
+                    <span>Fashion & Bags</span>
+                </a>
+                <a href="#products" class="fk-cat-card">
+                    <span class="fk-cat-card-icon">🏠</span>
+                    <span>Home & Kitchen</span>
+                </a>
+                <a href="#products" class="fk-cat-card">
+                    <span class="fk-cat-card-icon">⚡</span>
+                    <span style="color: #2874f0;">Top Offers</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="fk-app-container" style="flex: 1; padding-top: 10px;">
+
+        <!-- Big E-Commerce Festive Banner -->
+        <div class="fk-hero-carousel">
+            <div>
+                <span style="background: #ffe500; color: #172337; font-weight: 800; font-size: 0.75rem; padding: 2px 8px; border-radius: 2px; text-transform: uppercase;">
+                    Big Savings Festival
+                </span>
+                <h2 style="font-size: 2rem; font-weight: 900; margin: 8px 0 4px; color: #ffffff;">
+                    Mega Electronics Days &bull; 50-80% Off
+                </h2>
+                <p style="color: #e0f2fe; font-size: 0.95rem; margin: 0;">
+                    Unbeatable prices on Top Brands &bull; Extra 10% Off on SuperCards
+                </p>
+            </div>
+            <div>
+                <a href="#login-box" style="background: #fb641b; color: #ffffff; font-weight: 800; font-size: 0.95rem; padding: 12px 28px; border-radius: 2px; text-decoration: none; box-shadow: 0 2px 6px rgba(0,0,0,0.3);">
+                    Shop Deals Now
+                </a>
+            </div>
+        </div>
+
+        <!-- Flash Message Alerts -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    {% if category.startswith('shopkart_') %}
+                        {% set clean_cat = category.replace('shopkart_', '') %}
+                        <div style="background: #fee2e2; border-left: 4px solid #ef4444; color: #b91c1c; padding: 12px 18px; margin-bottom: 20px; border-radius: 2px; font-weight: 600; font-size: 0.92rem;">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Flipkart Split Login Form -->
+        <div class="fk-store-login-box" id="login-box">
+            <!-- Left Blue Panel -->
+            <div class="fk-store-login-left">
+                <div>
+                    <h2 style="font-size: 1.85rem; font-weight: 800; margin-bottom: 14px; color: #ffffff;">Login</h2>
+                    <p style="font-size: 1rem; color: #dbeafe; line-height: 1.5; margin: 0;">
+                        Get access to your Orders, Wishlist and Recommendations
+                    </p>
+                </div>
+
+                <div style="text-align: center; margin-top: 40px; opacity: 0.85;">
+                    <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.5">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Right White Form Panel -->
+            <div class="fk-store-login-right">
+                <form method="POST" action="{{ url_for('shopping_login') }}">
+                    <div class="fk-store-input-group">
+                        <label for="shop_username" class="fk-store-label">Enter Email/Mobile number</label>
+                        <input 
+                            type="text" 
+                            id="shop_username" 
+                            name="username" 
+                            class="fk-store-input" 
+                            placeholder="demo@shopkart.local" 
+                            value="demo@shopkart.local" 
+                            required
+                        >
+                    </div>
+
+                    <div class="fk-store-input-group">
+                        <label for="shop_password" class="fk-store-label">Enter Password</label>
+                        <input 
+                            type="password" 
+                            id="shop_password" 
+                            name="password" 
+                            class="fk-store-input" 
+                            placeholder="Enter Password (Demo@123)" 
+                            value="Demo@123" 
+                            required
+                        >
+                    </div>
+
+                    <div style="font-size: 0.75rem; color: #878787; margin-bottom: 22px; line-height: 1.4;">
+                        By continuing, you agree to ShopKart's <span style="color: #2874f0; cursor: pointer;">Terms of Use</span> and <span style="color: #2874f0; cursor: pointer;">Privacy Policy</span>.
+                    </div>
+
+                    <button type="submit" class="fk-orange-submit-btn">
+                        Login
+                    </button>
+                </form>
+
+                <!-- Demo Account Helper Pill -->
+                <div style="margin-top: 24px; background: #fff7ed; border: 1px dashed #f97316; border-radius: 2px; padding: 12px 14px;">
+                    <div style="font-size: 0.8rem; font-weight: 700; color: #c2410c; margin-bottom: 4px;">
+                        Demo Credentials (Pre-filled):
+                    </div>
+                    <div style="font-size: 0.85rem; color: #431407;">
+                        Email: <strong>demo@shopkart.local</strong> &bull; Password: <strong>Demo@123</strong>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 24px;">
+                    <a href="{{ url_for('shopping_register') }}" style="color: #2874f0; font-weight: 700; font-size: 0.88rem; text-decoration: none;">
+                        New to ShopKart? Create an account
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Products Showcase (Flipkart Style) -->
+        <div class="fk-products-container-white" id="products">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 14px;">
+                <div>
+                    <h3 style="font-size: 1.4rem; font-weight: 800; color: #212121; margin: 0 0 4px;">
+                        Best Deals on Electronics & Gadgets
+                    </h3>
+                    <span style="font-size: 0.82rem; color: #878787;">Top selling products across all categories</span>
+                </div>
+                <a href="#login-box" style="background: #2874f0; color: #ffffff; font-weight: 700; font-size: 0.82rem; padding: 8px 18px; border-radius: 2px; text-decoration: none;">
+                    VIEW ALL
+                </a>
+            </div>
+
+            <div class="grid-4" style="gap: 16px; margin-bottom: 0;">
+                {% for prod in products %}
+                    <div class="fk-store-prod-card">
+                        <div style="display: flex; justify-content: flex-end; margin-bottom: 6px;">
+                            <span style="background: #eff6ff; color: #2874f0; font-weight: 800; font-style: italic; font-size: 0.68rem; padding: 2px 6px; border-radius: 2px;">
+                                Assured &#10003;
+                            </span>
+                        </div>
+
+                        <!-- Product Image Placeholder Box -->
+                        <div style="height: 140px; display: flex; align-items: center; justify-content: center; background: #fafafa; border-radius: 4px; margin-bottom: 12px;">
+                            {% if prod.category == 'Audio' %}
+                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>
+                            {% elif prod.category == 'Peripherals' %}
+                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="6" y1="8" x2="6" y2="8"></line><line x1="10" y1="8" x2="10" y2="8"></line><line x1="14" y1="8" x2="14" y2="8"></line><line x1="18" y1="8" x2="18" y2="8"></line><line x1="6" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="18" y2="12"></line><line x1="8" y1="16" x2="16" y2="16"></line></svg>
+                            {% elif prod.category == 'Wearables' %}
+                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="1.5"><rect x="6" y="7" width="12" height="10" rx="3"></rect><path d="M9 7V3h6v4M9 17v4h6v-4"></path></svg>
+                            {% else %}
+                                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                            {% endif %}
+                        </div>
+
+                        <h4 style="font-size: 0.95rem; font-weight: 700; color: #212121; margin: 0 0 6px; line-height: 1.3;">
+                            {{ prod.name }}
+                        </h4>
+
+                        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+                            <span style="background: #388e3c; color: #ffffff; font-size: 0.72rem; font-weight: 700; padding: 2px 6px; border-radius: 2px;">
+                                4.4 &#9733;
+                            </span>
+                            <span style="font-size: 0.75rem; color: #878787;">(3,124 ratings)</span>
+                        </div>
+
+                        <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 6px;">
+                            <span style="font-size: 1.2rem; font-weight: 800; color: #212121;">{{ prod.price }}</span>
+                            <span style="font-size: 0.85rem; color: #878787; text-decoration: line-through;">{{ prod.original_price }}</span>
+                            <span style="font-size: 0.85rem; font-weight: 700; color: #388e3c;">40% off</span>
+                        </div>
+
+                        <div style="font-size: 0.72rem; color: #388e3c; font-weight: 600; margin-bottom: 12px;">
+                            Free delivery by Tomorrow
+                        </div>
+
+                        <button type="button" style="background: #ff9f00; color: #ffffff; border: none; font-weight: 700; font-size: 0.88rem; padding: 10px; border-radius: 2px; cursor: pointer; margin-top: auto;" onclick="document.getElementById('shop_username').focus();">
+                            BUY NOW
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Authentic E-Commerce Footer -->
+    <footer class="fk-store-footer">
+        <div class="fk-app-container">
+            <div class="fk-footer-grid">
+                <div class="fk-footer-col">
+                    <h5>ABOUT</h5>
+                    <ul>
+                        <li><a href="#about">Contact Us</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#about">Careers</a></li>
+                        <li><a href="#about">ShopKart Stories</a></li>
+                        <li><a href="#about">Press</a></li>
+                    </ul>
+                </div>
+
+                <div class="fk-footer-col">
+                    <h5>HELP</h5>
+                    <ul>
+                        <li><a href="#help">Payments</a></li>
+                        <li><a href="#help">Shipping</a></li>
+                        <li><a href="#help">Cancellation & Returns</a></li>
+                        <li><a href="#help">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <div class="fk-footer-col">
+                    <h5>CONSUMER POLICY</h5>
+                    <ul>
+                        <li><a href="#policy">Cancellation & Returns</a></li>
+                        <li><a href="#policy">Terms Of Use</a></li>
+                        <li><a href="#policy">Security</a></li>
+                        <li><a href="#policy">Privacy</a></li>
+                        <li><a href="#policy">Sitemap</a></li>
+                    </ul>
+                </div>
+
+                <div class="fk-footer-col">
+                    <h5>SOCIAL</h5>
+                    <ul>
+                        <li><a href="#social">Facebook</a></li>
+                        <li><a href="#social">Twitter / X</a></li>
+                        <li><a href="#social">YouTube</a></li>
+                    </ul>
+                </div>
+
+                <div class="fk-footer-col" style="border-left: 1px solid #454d5e; padding-left: 20px;">
+                    <h5>Registered Office Address:</h5>
+                    <div style="color: #ffffff; line-height: 1.5; font-size: 0.75rem;">
+                        ShopKart Internet Private Limited,<br>
+                        Buildings Alyssa, Begonia & Clove Embassy Tech Village,<br>
+                        Outer Ring Road, Bengaluru, 560103, Karnataka, India<br>
+                        CIN : U51109KA2012PTC066107
+                    </div>
+                </div>
+            </div>
+
+            <div class="fk-footer-bottom-bar">
+                <div>&copy; 2026 ShopKart.com &bull; Fictional E-Commerce Demonstration</div>
+                <div style="display: flex; gap: 24px;">
+                    <span>Become a Seller</span>
+                    <span>Advertise</span>
+                    <span>Gift Cards</span>
+                    <span>Help Center</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
